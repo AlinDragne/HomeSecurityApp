@@ -3,8 +3,11 @@
 Data Analysis and Discussion
 
 Introduction
+
 The development of the HomeSecurityApp project took place through various stages, experiencing numerous successes, opportunities to learn, and unexpected obstacles. This chapter aims to clearly present the outcomes, including the results, challenges, and important insights, while also linking them back to the original research problem, objectives, and questions that guided this project.
+
 Structure of the project:
+
 1.	LiveView.razor 
 Fig. LiveView.razor
 •	Purpose: Displays a live view, of the webcam.
