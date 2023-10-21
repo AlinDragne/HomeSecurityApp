@@ -10,24 +10,20 @@ Structure of the project:
 
 1.	LiveView.razor
 ![Screenshot 2023-10-21 193139](https://github.com/AlinDragne/HomeSecurityApp/assets/80887719/4dbd9d18-cce3-4c4a-9465-3fd91abe16ed)
-
-
 Fig. LiveView.razor
 •	Purpose: Displays a live view, of the webcam.
 •	Content: Uses the FaceDetectionService (for detecting faces in the live stream) and JavaScript (camera.js is imported) to use the webcam such as calling methods to manipulate the video stream.
 2.	ManageRoles.razor
   ![Screenshot 2023-10-13 193132](https://github.com/AlinDragne/HomeSecurityApp/assets/80887719/3fae876d-964d-47ee-8b25-56758ade2355)
-
-Fig. ManageRoles – AdminAccount
-![Screenshot 2023-10-13 193236](https://github.com/AlinDragne/HomeSecurityApp/assets/80887719/2eb9fb82-559f-4a53-8afc-af03ea0e6808)
-
-Fig. ManageRoles – ViewerAccount
+  Fig. ManageRoles – AdminAccount
+  ![Screenshot 2023-10-13 193236](https://github.com/AlinDragne/HomeSecurityApp/assets/80887719/2eb9fb82-559f-4a53-8afc-af03ea0e6808)
+  Fig. ManageRoles – ViewerAccount
 
 •	Purpose: Manages user roles.
 •	Content: Using .NET Core Identity, this page interacts with user and role management functionalities. Uses loops through a collection of “users”, emails and assigned roles are displayed in a table. This page is only accessible to users with the admin role.
+
 3.	DetectedFaces.razor
  ![Screenshot 2023-10-13 193321](https://github.com/AlinDragne/HomeSecurityApp/assets/80887719/d5300036-9b4b-46c6-aceb-126e3c92f951)
-
 Fig. DetectedFaces.razor
 
 •	Purpose: Displays detected faces, grouping them by month.
@@ -47,19 +43,21 @@ Fig. DetectedFaces.razor
 8. Index.razor
 
 Resu![Screenshot 2023-10-21 193109](https://github.com/AlinDragne/HomeSecurityApp/assets/80887719/75f4bcd6-e01e-4f14-8561-ca2767c70c89)
-lts:
+
+
+Results:
 1.	Successes
 
 •	Real-Time Face Detection: Accomplished through the implementation of Emgu CV in FaceDetectionService.cs, enabling the application to detect faces.
 
-•	User Role Management: Using IdentityDataInitialiser.cs, the HomeSecurityApp sets up role-based access and adds initial data, making sure that access and user roles are managed in a structured way by using the Microsoft Identity library. This library is known for its strong abilities in handling user identities and access in ASP.NET Core applications and was key in making the user authentication and authorisation in the app smooth and straightforward. Using Microsoft Identity not only made the application’s security stronger by ensuring secure user authentication and role management, but also offered a framework that is easy to manage and can be expanded in future versions of the application.
+•	User Role Management: Using IdentityDataInitialiser.cs, the HomeSecurityApp sets up role-based access and adds initial data, making sure that access and user roles are managed in a structured way by using the Microsoft Identity library. This library is known for its strong abilities in handling user identities and access in ASP.NET Core applications and was key in making the user authentication and authorisation in the app smooth and straightforward. Using Microsoft Identity not only made the application’s security stronger by ensuring secure user authentication and role management but also offered a framework that is easy to manage and can be expanded in future versions of the application.
 
 
 •	User Interaction and Data Display: Realised through Razor pages like DetectedFaces.razor and ManageRoles.razor, providing intuitive UIs for data interaction and management.
 
 2.	Failures
 
-•	Model Accuracy and Performance: The challenges in improving face detection were many. This included exploring different pre-trained models like tiny YOLOv2 and dealing with problems like faulty models and poor performance in various situations. Making sure the detection was accurate while also keeping it working efficiently was a particularly tricky challenge, especially for real-time face detection and processing. After considering these issues, the decision was made to stick with the Haarcascade pre-trained model. This choice was driven by its relative simplicity, ease of implementation, and its proven efficacy in various scenarios, despite the obstacles encountered with other models.
+•	Model Accuracy and Performance: The challenges in improving face detection were many. This included exploring different pre-trained models like tiny YOLOv2 and dealing with problems like faulty models and poor performance in various situations. Making sure the detection was accurate while also keeping it working efficiently was a particularly tricky challenge, especially for real-time face detection and processing. After considering these issues, the decision was made to stick with the Haar cascade pre-trained model. This choice was driven by its relative simplicity, ease of implementation, and proven efficacy in various scenarios, despite the obstacles encountered with other models.
 
 •	Data Consistency: The application faced problems in ensuring consistent data seeding and managing potential conflicts or errors during user and role management processes. The adaptation from tutorials and implementations in .NET 5 to .NET 7 showed challenges in library compatibility and functionality, requiring careful modification and adaptation to ensure data integrity and consistency.
 
@@ -67,7 +65,7 @@ lts:
 
 •	Dependency and Library Management: Navigating through dependency management, particularly with NuGet packages, brought forth challenges in managing versions compatible with .NET 7.0, resolving issues related to missing .dll files, and ensuring clear and compatible package versions across the application.
 
-•	Syntax and Semantic Issues: The code faced quiet problems with both syntax and meaning, from missed semicolons to extra curly braces. Even though these might seem like small issues, they required a deep dive into debugging. The silent issues, which didn't provide instant error feedback, showed how important careful code review and testing are to make sure the code works properly and without errors. Also, removing features and methods from classes and even .cs files, and forgetting to take them out from: Program.cs or other files like .razor files, led to errors and required a complete rethinking of the solution.
+•	Syntax and Semantic Issues: The code faced quiet problems with both syntax and meaning, from missed semicolons to extra curly braces. Even though these might seem like small issues, they require a deep dive into debugging. The silent issues, which didn't provide instant error feedback, showed how important careful code review and testing are to make sure the code works properly and without errors. Also, removing features and methods from classes and even .cs files, and forgetting to take them out from Program.cs or other files like .razor files, led to errors and required a complete rethinking of the solution.
 
 
 •	Adaptation to Updated Technologies: Adapting methodologies and implementations from tutorials and resources based on older .NET versions to the utilised .NET 7 presented its own set of challenges. Ensuring that libraries and implementations were not only compatible but also optimized for .NET 7 required a thorough understanding and adaptation of the utilised technologies and libraries.
