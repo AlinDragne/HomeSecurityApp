@@ -8,19 +8,25 @@ The development of the HomeSecurityApp project took place through various stages
 
 Structure of the project:
 
-1.	LiveView.razor 
+1.	LiveView.razor
+![Screenshot 2023-10-13 192901](https://github.com/AlinDragne/HomeSecurityApp/assets/80887719/f23a63a4-6b0f-420e-9863-df411a6d36fd)
+
 Fig. LiveView.razor
 •	Purpose: Displays a live view, of the webcam.
 •	Content: Uses the FaceDetectionService (for detecting faces in the live stream) and JavaScript (camera.js is imported) to use the webcam such as calling methods to manipulate the video stream.
 2.	ManageRoles.razor
- 
-Fig. ManageRoles – ViewerAccount
- 
+  ![Screenshot 2023-10-13 193132](https://github.com/AlinDragne/HomeSecurityApp/assets/80887719/3fae876d-964d-47ee-8b25-56758ade2355)
+
 Fig. ManageRoles – AdminAccount
+![Screenshot 2023-10-13 193236](https://github.com/AlinDragne/HomeSecurityApp/assets/80887719/2eb9fb82-559f-4a53-8afc-af03ea0e6808)
+
+Fig. ManageRoles – ViewerAccount
+
 •	Purpose: Manages user roles.
 •	Content: Using .NET Core Identity, this page interacts with user and role management functionalities. Uses loops through a collection of “users”, emails and assigned roles are displayed in a table. This page is only accessible to users with the admin role.
 3.	DetectedFaces.razor
- 
+ ![Screenshot 2023-10-13 193321](https://github.com/AlinDragne/HomeSecurityApp/assets/80887719/d5300036-9b4b-46c6-aceb-126e3c92f951)
+
 Fig. DetectedFaces.razor
 
 •	Purpose: Displays detected faces, grouping them by month.
