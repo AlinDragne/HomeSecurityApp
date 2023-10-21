@@ -1,0 +1,91 @@
+﻿@page "/manageroles"
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Authorization
+@using HomeSecurityApp.Areas.Identity
+@using HomeSecurityApp.Data
+@attribute [Authorize(Roles = UserRoles.Admin)]
+@inject UserManager<IdentityUser> UserManager
+@inject RoleManager<IdentityRole> RoleManager
+
+<h3>Manage Roles</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in users)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>
+                    @if (userRoles.ContainsKey(user))
+                    {
+                        @foreach (var role in userRoles[user])
+                        {
+                            <span class="badge bg-primary">@role</span>
+                        }
+                    }
+                </td>
+                <td>
+                    @if (userRoles.ContainsKey(user))
+                    {
+                        @if (userRoles[user].Contains(UserRoles.Admin))
+                        {
+                            <button class="btn btn-danger" @onclick="@( () => ChangeRole(user, UserRoles.Admin, false) )">Remove Admin</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-success" @onclick="@(() => ChangeRole(user, UserRoles.Admin, true))">Make Admin</button>
+                        }
+
+                        @if (userRoles[user].Contains(UserRoles.Viewer))
+                        {
+                            <button class="btn btn-danger" @onclick="@(() => ChangeRole(user, UserRoles.Viewer, false))">Remove Viewer</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-success" @onclick="@(() => ChangeRole(user, UserRoles.Viewer, true))">Make Viewer</button>
+                        }
+                    }
+                    else
+                    {
+                        <span>Roles not loaded</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<IdentityUser> users = new List<IdentityUser>();
+    private Dictionary<IdentityUser, IList<string>> userRoles = new Dictionary<IdentityUser, IList<string>>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = UserManager.Users.ToList();
+        foreach (var user in users)
+        {
+            userRoles[user] = await UserManager.GetRolesAsync(user);
+        }
+        return;
+    }
+
+    private async Task ChangeRole(IdentityUser user, string role, bool addRole)
+    {
+        if (addRole)
+        {
+            await UserManager.AddToRoleAsync(user, role);
+        }
+        else
+        {
+            await UserManager.RemoveFromRoleAsync(user, role);
+        }
+        userRoles[user] = await UserManager.GetRolesAsync(user);
+        StateHasChanged();
+    }
+}

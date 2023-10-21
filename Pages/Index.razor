@@ -1,0 +1,38 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.SignalR.Client
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+
+<PageTitle>Index</PageTitle>
+
+<h1>Home Security System</h1>
+
+Easy implementeation for a Home Security System that is affordable.
+
+<h3 style="color: @GetColorBasedOnStatus()">@motionStatus</h3>
+
+
+@code {
+    private HubConnection hubConnection;
+    private string motionStatus = "No motion detected";
+
+    private string GetColorBasedOnStatus()
+    {
+        return motionStatus == "No motion detected" ? "green" : "red";
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/notificationHub"))
+            .Build();
+
+        hubConnection.On<string>("ReceiveNotification", (message) =>
+        {
+            motionStatus = message;
+            InvokeAsync(() => StateHasChanged());  // Ensure this runs on the main thread
+        });
+
+        await hubConnection.StartAsync();
+    }
+}

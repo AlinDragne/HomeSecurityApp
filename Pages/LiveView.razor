@@ -1,0 +1,76 @@
+﻿@page "/liveview"
+@inject IJSRuntime JS
+@inject FaceDetectionService FaceService
+
+<h3>Live View</h3>
+
+<video id="webcam" width="640" height="480" autoplay></video>
+
+<button @onclick="StartCamera">Start Camera</button>
+<button @onclick="StopCamera">Stop Camera</button>
+<button @onclick="StartSendingFrames">Start Detecting Faces</button>
+<button @onclick="StopSendingFrames">Stop Detecting Faces</button>
+
+@code {
+    private IJSObjectReference _jsModule;
+    private CancellationTokenSource cts;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _jsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./scripts/camera.js");
+            await _jsModule.InvokeVoidAsync("initialize", DotNetObjectReference.Create(this));
+        }
+    }
+
+    private async Task StartCamera()
+    {
+        await _jsModule.InvokeVoidAsync("startCamera");
+    }
+
+    private async Task StopCamera()
+    {
+        await _jsModule.InvokeVoidAsync("stopCamera");
+    }
+
+    [JSInvokable]
+    public async Task ProcessFrame(string frameDataUrl)
+    {
+        await Task.Run(() =>
+        {
+            var base64Data = frameDataUrl.Split(",").Last();
+            byte[] frameBytes = Convert.FromBase64String(base64Data);
+
+            FaceService.DetectFacesAndSaveImage(frameBytes);
+        });
+    }
+
+    private async Task StartSendingFrames()
+    {
+        bool isCameraActive = await _jsModule.InvokeAsync<bool>("isCameraActive");
+        if (!isCameraActive)
+        {
+            Console.WriteLine("Camera is not active. Not starting detection.");
+            return;
+        }
+
+        cts = new CancellationTokenSource();
+        while (!cts.Token.IsCancellationRequested)
+        {
+            await _jsModule.InvokeVoidAsync("sendFrameToServer");
+            await Task.Delay(5000);  // Wait for 5 seconds.
+        }
+    }
+
+    private void StopSendingFrames()
+    {
+        cts?.Cancel();
+    }
+
+    public void Dispose()
+    {
+        
+        cts?.Dispose();
+    }
+}

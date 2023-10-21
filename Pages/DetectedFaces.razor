@@ -1,0 +1,67 @@
+﻿@page "/detected-faces"
+@inject ImageService ImageService
+@using System.Globalization
+
+<h3>Detected Faces</h3>
+
+@if (imageGroups == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (imageGroups.Any())
+{
+    <select @bind="selectedMonth">
+        @foreach (var group in imageGroups)
+        {
+            <option value="@group.Key">@group.Key</option>
+        }
+    </select>
+
+    @if (!string.IsNullOrEmpty(selectedMonth) && imageGroups.Any(g => g.Key == selectedMonth))
+    {
+        var imagesToShow = imageGroups.First(g => g.Key == selectedMonth);
+        <h4>@selectedMonth</h4>
+        foreach (var fileName in imagesToShow)
+        {
+            <div class="image-container">
+                <img src=@($"api/images/{fileName}") alt="Detected Face" />
+                <p>@fileName</p>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No images to display for the selected month.</p>
+    }
+}
+else
+{
+    <p>No faces detected yet.</p>
+}
+
+@code {
+    private IEnumerable<string> imageFileNames = Enumerable.Empty<string>();
+    private IEnumerable<IGrouping<string, string>> imageGroups = Enumerable.Empty<IGrouping<string, string>>();
+    private string selectedMonth;
+
+    protected override Task OnInitializedAsync()
+    {
+        imageFileNames = ImageService.GetImageFileNames();
+
+        // Group images by month
+        imageGroups = imageFileNames
+            .GroupBy(fn => ParseDateFromFileName(fn).ToString("yyyy MMMM"))
+            .OrderByDescending(g => g.Key);
+
+        // Automatically select the first month when the page loads
+        selectedMonth = imageGroups.FirstOrDefault()?.Key;
+
+        return Task.CompletedTask;
+    }
+
+    private DateTime ParseDateFromFileName(string fileName)
+    {
+        var dateString = fileName.Substring(0, "yyyyMMdd_HHmmss".Length);
+        return DateTime.ParseExact(dateString, "yyyyMMdd_HHmmss", CultureInfo.InvariantCulture);
+    }
+}
