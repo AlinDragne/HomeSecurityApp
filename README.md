@@ -9,7 +9,8 @@ The development of the HomeSecurityApp project took place through various stages
 Structure of the project:
 
 1.	LiveView.razor
-![Screenshot 2023-10-13 192901](https://github.com/AlinDragne/HomeSecurityApp/assets/80887719/f23a63a4-6b0f-420e-9863-df411a6d36fd)
+![Screenshot 2023-10-21 193139](https://github.com/AlinDragne/HomeSecurityApp/assets/80887719/4dbd9d18-cce3-4c4a-9465-3fd91abe16ed)
+
 
 Fig. LiveView.razor
 •	Purpose: Displays a live view, of the webcam.
@@ -43,8 +44,10 @@ Fig. DetectedFaces.razor
 7.	camera.js
 •	Purpose: Manage the webcam and video streaming functionality.
 •	Content: captureFrame() – Capture a single frame from the webcam(not being used in this state of the app), isCameraActive() - Check whether the camera is active (error prevention), sendFrameToServer() - If the camera is active, capture a frame and call ProcessFrame, to process the frame on the server-side.
+8. Index.razor
 
-Results:
+Resu![Screenshot 2023-10-21 193109](https://github.com/AlinDragne/HomeSecurityApp/assets/80887719/75f4bcd6-e01e-4f14-8561-ca2767c70c89)
+lts:
 1.	Successes
 
 •	Real-Time Face Detection: Accomplished through the implementation of Emgu CV in FaceDetectionService.cs, enabling the application to detect faces.
