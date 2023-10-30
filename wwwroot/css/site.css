@@ -1,5 +1,15 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+.image-container {
+    display: inline-block; /* Makes containers display horizontally */
+    margin: 5px; /* Adds some space between image containers */
+    vertical-align: top; /* Aligns the tops of the image containers */
+}
+
+    .image-container img {
+        width: 150px; /* Adjust this value to desired image width */
+        height: auto; /* Maintains the aspect ratio of the image */
+    }
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;

@@ -10,16 +10,17 @@
 }
 else if (imageGroups.Any())
 {
-    <select @bind="selectedMonth">
+    <select @bind-value="selectedMonth" @bind-value:event="oninput" @onchange="HandleMonthChange">
         @foreach (var group in imageGroups)
         {
             <option value="@group.Key">@group.Key</option>
         }
     </select>
 
+
     @if (!string.IsNullOrEmpty(selectedMonth) && imageGroups.Any(g => g.Key == selectedMonth))
     {
-        var imagesToShow = imageGroups.First(g => g.Key == selectedMonth);
+        var imagesToShow = imageGroups.First(g => g.Key == selectedMonth).Skip(currentPage * itemsPerPage).Take(itemsPerPage).ToList();
         <h4>@selectedMonth</h4>
         foreach (var fileName in imagesToShow)
         {
@@ -28,6 +29,9 @@ else if (imageGroups.Any())
                 <p>@fileName</p>
             </div>
         }
+        
+        <button @onclick="PreviousPage" disabled="@(!CanPrevious)">Previous</button>
+        <button @onclick="NextPage" disabled="@(!CanNext)">Next</button>
     }
     else
     {
@@ -43,6 +47,8 @@ else
     private IEnumerable<string> imageFileNames = Enumerable.Empty<string>();
     private IEnumerable<IGrouping<string, string>> imageGroups = Enumerable.Empty<IGrouping<string, string>>();
     private string selectedMonth;
+    private int currentPage = 0; // Pagination: start from the first page
+    private const int itemsPerPage = 5;
 
     protected override Task OnInitializedAsync()
     {
@@ -64,4 +70,22 @@ else
         var dateString = fileName.Substring(0, "yyyyMMdd_HHmmss".Length);
         return DateTime.ParseExact(dateString, "yyyyMMdd_HHmmss", CultureInfo.InvariantCulture);
     }
+
+    private void HandleMonthChange()
+    {
+        currentPage = 0; // Reset to first page when month changes
+    }
+
+    private void NextPage()
+    {
+        if (CanNext) currentPage++;
+    }
+
+    private void PreviousPage()
+    {
+        if (CanPrevious) currentPage--;
+    }
+
+    private bool CanNext => imageGroups.Any(g => g.Key == selectedMonth) && (currentPage + 1) * itemsPerPage < imageGroups.First(g => g.Key == selectedMonth).Count();
+    private bool CanPrevious => currentPage > 0;
 }
