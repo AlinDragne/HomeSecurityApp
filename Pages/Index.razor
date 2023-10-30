@@ -3,13 +3,31 @@
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Home</PageTitle>
 
+<!-- Main Heading -->
 <h1>Home Security System</h1>
 
-Easy implementeation for a Home Security System that is affordable.
+<!-- Status Display with "Status" word in black -->
+<h2><span style="color: black;">Status:</span> <span style="color: @GetColorBasedOnStatus()">@motionStatus</span></h2>
 
-<h3 style="color: @GetColorBasedOnStatus()">@motionStatus</h3>
+<!-- Description -->
+<section class="description">
+    <p>
+        Welcome to <strong>HomeSecurityApp</strong>, your comprehensive home safety solution. Let's delve into the key functionalities that set our application apart:
+    </p>
+    <ul>
+        <li><strong>Real-time Motion Detection:</strong> Our system actively monitors your premises, providing instantaneous status updates. With dynamic color-coded alerts, users are immediately aware of any detected activity, ensuring swift response times.</li>
+        <li><strong>Facial Recognition:</strong> Leveraging state-of-the-art algorithms, HomeSecurityApp can identify and validate faces. This feature distinguishes between known and unknown individuals, adding an extra layer of security to your home.</li>
+        <li><strong>Live Camera Feed:</strong> Experience a live surveillance feed right from your dashboard. With integrated controls, users can easily start or stop the camera and activate real-time face detection, offering a seamless monitoring experience.</li>
+        <li><strong>User Authentication:</strong> Safety also extends to data privacy. Our robust user authentication and authorization system ensure that only authorized individuals can access the system. Furthermore, with user roles like 'Admin' and 'Viewer', you have control over accessibility.</li>
+        <li><strong>Instant Alerts:</strong> Integrated with SignalR, our application offers real-time web functionality. When motion is detected, alerts are instantly sent to all connected devices, ensuring you're always in the loop.</li>
+        <li><strong>Image Management:</strong> Access captured images with ease. Whether it's a snapshot from the live feed or detected faces, our system organizes and stores images for easy retrieval.</li>
+    </ul>
+    <p>
+        Crafted with a user-centric approach, <strong>HomeSecurityApp</strong> ensures not just the safety of your home, but also offers an intuitive and hassle-free user experience. Dive in and explore a new standard in home security!
+    </p>
+</section>
 
 
 @code {
@@ -30,7 +48,7 @@ Easy implementeation for a Home Security System that is affordable.
         hubConnection.On<string>("ReceiveNotification", (message) =>
         {
             motionStatus = message;
-            InvokeAsync(() => StateHasChanged());  // Ensure this runs on the main thread
+            InvokeAsync(() => StateHasChanged());
         });
 
         await hubConnection.StartAsync();
